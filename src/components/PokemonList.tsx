@@ -42,7 +42,7 @@ const PokemonList = () => {
           <Search setSearch={setSearchTerm} />
         </div>
         {!isLoading ? (
-          <div className="flex flex-wrap justify-between">
+          <div className="flex flex-wrap">
             {!filteredPokemons.length ? (
               <h5 className="p-2 m-4">No Pokemons found</h5>
             ) : (
@@ -55,8 +55,12 @@ const PokemonList = () => {
                     to={`/pokemondescription/${pokemon.name}`}
                     state={pokemon.name}
                   >
-                    <img className="w-32" src="./pokeball.png" alt="pokeball" />
-                    <p className="font-bold">{pokemon.name}</p>
+                    <img
+                      className="w-32 mx-auto"
+                      src="./pokeball.png"
+                      alt="pokeball"
+                    />
+                    <p className="font-bold w-32">{pokemon.name}</p>
                   </Link>
                 </button>
               ))

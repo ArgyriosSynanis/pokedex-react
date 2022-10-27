@@ -58,7 +58,7 @@ const PokemonDescription = () => {
     <>
       {!isLoading ? (
         <div className="flex justify-center">
-          <div className="rounded-lg shadow-lg bg-white max-w-sm">
+          <div className="rounded-lg shadow-2xl bg-white max-w-sm">
             <h5 className="text-gray-900 text-center text-3xl font-medium my-2">
               {capitalizeFirstLetter(data.name)}
             </h5>
