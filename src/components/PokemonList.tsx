@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Search from './Search';
 import SearchContext from '../context/SearchContext';
+import Loading from './Loading';
 import { Link } from 'react-router-dom';
 
 const PokemonList = () => {
   const [pokemons, setPokemons] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
@@ -16,7 +17,6 @@ const PokemonList = () => {
         .then((data) => {
           setIsLoading(false);
           setPokemons(data.results);
-          console.log(data.results);
         })
         .catch((error) => {
           setIsLoading(false);
@@ -35,33 +35,35 @@ const PokemonList = () => {
     <React.Fragment>
       <div>
         <div className="flex flex-col md:items-center md:flex-row md:justify-between mb-4 mx-4">
-          <h1 className="text-4xl">Gotta catch em all!</h1>
+          <div>
+            <h1 className="text-4xl">Pokedex React Challenge</h1>
+            <h5>Please click on a PokeBall to get its Pokemon details</h5>
+          </div>
           <Search setSearch={setSearchTerm} />
         </div>
         {!isLoading ? (
-          <div>
+          <div className="flex flex-wrap justify-between">
             {!filteredPokemons.length ? (
               <h5 className="p-2 m-4">No Pokemons found</h5>
             ) : (
               filteredPokemons.map((pokemon: { name: string }) => (
                 <button
                   key={pokemon.name}
-                  className="bg-gray-400 rounded-lg p-2 m-4 text-white"
+                  className="bg-gray-500 rounded-lg p-2 m-4 text-white"
                 >
-                  <p>
-                    <Link
-                      to={`/pokemondescription/${pokemon.name}`}
-                      state={pokemon.name}
-                    >
-                      {pokemon.name}
-                    </Link>
-                  </p>
+                  <Link
+                    to={`/pokemondescription/${pokemon.name}`}
+                    state={pokemon.name}
+                  >
+                    <img className="w-32" src="./pokeball.png" alt="pokeball" />
+                    <p className="font-bold">{pokemon.name}</p>
+                  </Link>
                 </button>
               ))
             )}
           </div>
         ) : (
-          <p className="p-2 m-4">Loading....</p>
+          <Loading />
         )}
       </div>
     </React.Fragment>

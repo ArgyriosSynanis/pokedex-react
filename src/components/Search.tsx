@@ -7,7 +7,7 @@ const Search = ({ setSearch }: any) => {
   };
 
   return (
-    <div className="mt-5 relative">
+    <div className="relative">
       <input
         type="text"
         placeholder="Search Pokemon"
