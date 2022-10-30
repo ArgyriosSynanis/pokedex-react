@@ -18,6 +18,7 @@ const Search = ({ setSearch }: any) => {
       <FaSearch
         className="absolute top-3.5 right-3.5 text-gray-400"
         size={20}
+        data-testid="FaSearch"
       />
     </div>
   );

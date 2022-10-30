@@ -2,28 +2,28 @@ import React, { useState, useEffect, useContext } from 'react';
 import Search from './Search';
 import SearchContext from '../context/SearchContext';
 import Loading from './Loading';
+import { getPokemonsFromApi } from '../api';
 import { Link } from 'react-router-dom';
 
 const PokemonList = () => {
   const [pokemons, setPokemons] = useState([]);
+  const [error, setError] = useState(false);
+
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-    async function getPokemon() {
-      await fetch('https://pokeapi.co/api/v2/pokemon/?limit=1154')
-        .then((res) => res.json())
-        .then((data) => {
-          setIsLoading(false);
-          setPokemons(data.results);
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          console.log(error);
-        });
-    }
-    getPokemon();
+    getPokemonsFromApi('?limit=1154')
+      .then((data) => {
+        setIsLoading(false);
+        setError(false);
+        setPokemons(data.results);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setError(true);
+      });
   }, []);
 
   const filteredPokemons =
@@ -41,33 +41,39 @@ const PokemonList = () => {
           </div>
           <Search setSearch={setSearchTerm} />
         </div>
-        {!isLoading ? (
-          <div className="flex flex-wrap">
-            {!filteredPokemons.length ? (
-              <h5 className="p-2 m-4">No Pokemons found</h5>
+        {error ? (
+          <p>Unable to fetch data</p>
+        ) : (
+          <div>
+            {!isLoading ? (
+              <div className="flex flex-wrap">
+                {!filteredPokemons.length ? (
+                  <h6 className="p-2 m-4">No Pokemons found</h6>
+                ) : (
+                  filteredPokemons.map((pokemon: { name: string }) => (
+                    <button
+                      key={pokemon.name}
+                      className="bg-gray-500 rounded-lg p-2 m-4 text-white"
+                    >
+                      <Link
+                        to={`/pokemondescription/${pokemon.name}`}
+                        state={pokemon.name}
+                      >
+                        <img
+                          className="w-32 mx-auto"
+                          src="./pokeball.png"
+                          alt="pokeball"
+                        />
+                        <p className="font-bold w-32">{pokemon.name}</p>
+                      </Link>
+                    </button>
+                  ))
+                )}
+              </div>
             ) : (
-              filteredPokemons.map((pokemon: { name: string }) => (
-                <button
-                  key={pokemon.name}
-                  className="bg-gray-500 rounded-lg p-2 m-4 text-white"
-                >
-                  <Link
-                    to={`/pokemondescription/${pokemon.name}`}
-                    state={pokemon.name}
-                  >
-                    <img
-                      className="w-32 mx-auto"
-                      src="./pokeball.png"
-                      alt="pokeball"
-                    />
-                    <p className="font-bold w-32">{pokemon.name}</p>
-                  </Link>
-                </button>
-              ))
+              <Loading />
             )}
           </div>
-        ) : (
-          <Loading />
         )}
       </div>
     </React.Fragment>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import Loading from './Loading';
+import { getPokemonsFromApi } from '../api';
 
 const PokemonDescription = () => {
   const location = useLocation();
@@ -22,33 +23,28 @@ const PokemonDescription = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    async function getPokemon() {
-      await fetch(`https://pokeapi.co/api/v2/pokemon/${location.state}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setIsLoading(false);
-          setData({
-            name: data?.species.name,
-            img: data?.sprites.other.dream_world.front_default,
-            type: data?.types[0].type.name,
-            abilities: {
-              main: data?.abilities[0]?.ability.name,
-              secondary: data?.abilities[1]?.ability.name,
-            },
-            stats: {
-              hp: data?.stats[0].base_stat,
-              attack: data?.stats[1].base_stat,
-              defense: data?.stats[2].base_stat,
-            },
-          });
-          console.log(data);
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          console.log(error);
+    getPokemonsFromApi(location.state)
+      .then((data) => {
+        setIsLoading(false);
+        setData({
+          name: data?.species.name,
+          img: data?.sprites.other.dream_world.front_default,
+          type: data?.types[0].type.name,
+          abilities: {
+            main: data?.abilities[0]?.ability.name,
+            secondary: data?.abilities[1]?.ability.name,
+          },
+          stats: {
+            hp: data?.stats[0].base_stat,
+            attack: data?.stats[1].base_stat,
+            defense: data?.stats[2].base_stat,
+          },
         });
-    }
-    getPokemon();
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+      });
   }, [location.state]);
 
   const capitalizeFirstLetter = (string: string) =>
