@@ -5,6 +5,7 @@ import Loading from './Loading';
 import { getPokemonsFromApi } from '../api';
 import { Link } from 'react-router-dom';
 import { PokemonListItem, PokemonListResults } from '../types/pokemon';
+import Page from './Page';
 
 const PokemonList = () => {
   const [pokemons, setPokemons] = useState<PokemonListResults | []>([]);
@@ -16,7 +17,6 @@ const PokemonList = () => {
     const getPokemons = async () => {
       try {
         const pokemonResponse = await getPokemonsFromApi('?limit=1154');
-
         setIsLoading(false);
         setError(false);
         setPokemons(pokemonResponse.results);
@@ -38,7 +38,7 @@ const PokemonList = () => {
   }
 
   return (
-    <React.Fragment>
+    <Page>
       <div>
         <div className="flex flex-col md:items-center md:flex-row md:justify-between mb-4 mx-4">
           <div>
@@ -60,6 +60,7 @@ const PokemonList = () => {
                     key={pokemon.name}
                     data-testid="pokemon"
                     className="bg-gray-500 rounded-lg p-2 m-4 text-white"
+                    onClick={() => setSearchTerm('')}
                   >
                     <Link
                       to={`/pokemondescription/${pokemon.name}`}
@@ -79,7 +80,7 @@ const PokemonList = () => {
           </div>
         )}
       </div>
-    </React.Fragment>
+    </Page>
   );
 };
 

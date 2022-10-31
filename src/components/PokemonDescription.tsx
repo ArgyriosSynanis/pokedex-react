@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import Loading from './Loading';
 import { getPokemonsFromApi } from '../api';
 import { Pokemon } from '../types/pokemon';
+import Page from './Page';
 
 const PokemonDescription = () => {
   const location = useLocation();
@@ -54,7 +55,7 @@ const PokemonDescription = () => {
   }
 
   return (
-    <>
+    <Page>
       <div className="flex justify-center">
         <div className="rounded-lg shadow-2xl bg-white max-w-sm">
           <h5 className="text-gray-900 text-center text-3xl font-medium my-2">
@@ -109,7 +110,7 @@ const PokemonDescription = () => {
           </div>
         </div>
       </div>
-    </>
+    </Page>
   );
 };
 
