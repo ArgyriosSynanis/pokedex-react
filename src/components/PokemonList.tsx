@@ -4,32 +4,38 @@ import SearchContext from '../context/SearchContext';
 import Loading from './Loading';
 import { getPokemonsFromApi } from '../api';
 import { Link } from 'react-router-dom';
+import { PokemonListItem, PokemonListResults } from '../types/pokemon';
 
 const PokemonList = () => {
-  const [pokemons, setPokemons] = useState([]);
+  const [pokemons, setPokemons] = useState<PokemonListResults | []>([]);
   const [error, setError] = useState(false);
-
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    getPokemonsFromApi('?limit=1154')
-      .then((data) => {
+    const getPokemons = async () => {
+      try {
+        const pokemonResponse = await getPokemonsFromApi('?limit=1154');
+
         setIsLoading(false);
         setError(false);
-        setPokemons(data.results);
-      })
-      .catch((error) => {
+        setPokemons(pokemonResponse.results);
+      } catch (e) {
         setIsLoading(false);
         setError(true);
-      });
+      }
+    };
+
+    getPokemons();
   }, []);
 
-  const filteredPokemons =
-    pokemons?.filter((pokemon: { name: string; searchTerm: string }) =>
-      pokemon?.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || [];
+  const filteredPokemons = pokemons?.filter((pokemon: PokemonListItem) =>
+    pokemon?.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (!isLoading && error) {
+    return <p>Oops! something went wrong</p>;
+  }
 
   return (
     <React.Fragment>
@@ -41,38 +47,35 @@ const PokemonList = () => {
           </div>
           <Search setSearch={setSearchTerm} />
         </div>
-        {error ? (
-          <p>Unable to fetch data</p>
+        {isLoading ? (
+          <Loading />
         ) : (
           <div>
-            {!isLoading ? (
-              <div className="flex flex-wrap">
-                {!filteredPokemons.length ? (
-                  <h6 className="p-2 m-4">No Pokemons found</h6>
-                ) : (
-                  filteredPokemons.map((pokemon: { name: string }) => (
-                    <button
-                      key={pokemon.name}
-                      className="bg-gray-500 rounded-lg p-2 m-4 text-white"
+            <div className="flex flex-wrap">
+              {!filteredPokemons.length ? (
+                <h6 className="p-2 m-4">No Pokemons found</h6>
+              ) : (
+                filteredPokemons.map((pokemon: { name: string }) => (
+                  <button
+                    key={pokemon.name}
+                    data-testid="pokemon"
+                    className="bg-gray-500 rounded-lg p-2 m-4 text-white"
+                  >
+                    <Link
+                      to={`/pokemondescription/${pokemon.name}`}
+                      state={pokemon.name}
                     >
-                      <Link
-                        to={`/pokemondescription/${pokemon.name}`}
-                        state={pokemon.name}
-                      >
-                        <img
-                          className="w-32 mx-auto"
-                          src="./pokeball.png"
-                          alt="pokeball"
-                        />
-                        <p className="font-bold w-32">{pokemon.name}</p>
-                      </Link>
-                    </button>
-                  ))
-                )}
-              </div>
-            ) : (
-              <Loading />
-            )}
+                      <img
+                        className="w-32 mx-auto"
+                        src="./pokeball.png"
+                        alt="pokeball"
+                      />
+                      <p className="font-bold w-32">{pokemon.name}</p>
+                    </Link>
+                  </button>
+                ))
+              )}
+            </div>
           </div>
         )}
       </div>

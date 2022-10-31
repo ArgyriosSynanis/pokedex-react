@@ -1,9 +1,15 @@
 import React from 'react';
 import { FaSearch } from 'react-icons/fa';
 
-const Search = ({ setSearch }: any) => {
+interface SearchProps {
+  setSearch?: (searchedTerm: string) => void;
+}
+
+const Search = ({ setSearch }: SearchProps) => {
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    if (setSearch) {
+      setSearch(e.target.value);
+    }
   };
 
   return (
