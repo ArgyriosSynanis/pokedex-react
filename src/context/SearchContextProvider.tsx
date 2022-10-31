@@ -1,7 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import SearchContext from './SearchContext';
 
-const SearchContextProvider = ({ children }: any) => {
+interface SearchContextProviderProps {
+  children: React.ReactNode;
+}
+
+const SearchContextProvider = ({ children }: SearchContextProviderProps) => {
   const [searchTerm, setSearchedTerm] = useState('');
 
   const setSearchTerm = useCallback((string: string) => {
