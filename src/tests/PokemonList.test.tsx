@@ -72,7 +72,7 @@ describe('PokemonList component', () => {
     });
   });
 
-  it('search for "Pikatsu" and see if item is on the screen', async () => {
+  it('search for "bulbasaur" and see if item is on the screen', async () => {
     jest.spyOn(api, 'getPokemonsFromApi').mockImplementation(
       () =>
         new Promise((resolve) =>
