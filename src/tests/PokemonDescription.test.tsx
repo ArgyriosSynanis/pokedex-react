@@ -4,9 +4,10 @@ import * as api from '../api';
 import PokemonDescription from '../components/PokemonDescription';
 import { BrowserRouter } from 'react-router-dom';
 
-jest.mock('../api');
 
 describe('PokemonDescription component', () => {
+  jest.mock('../api');
+  
   afterEach(() => {
     jest.clearAllMocks();
   });

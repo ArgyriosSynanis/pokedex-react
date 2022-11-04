@@ -5,9 +5,9 @@ import * as api from '../api';
 import { BrowserRouter } from 'react-router-dom';
 import SearchContextProvider from '../context/SearchContextProvider';
 
-jest.mock('../api');
-
 describe('PokemonList component', () => {
+  jest.mock('../api');
+
   afterEach(() => {
     jest.clearAllMocks();
   });
