@@ -57,8 +57,10 @@ const PokemonDescription = () => {
   return (
     <Page>
       <div className="flex justify-center">
-        <div className="rounded-lg shadow-2xl bg-white max-w-sm">
-          <h5 className="text-gray-900 text-center text-3xl font-medium my-2">
+        <div
+          className={`rounded-lg shadow-2xl max-w-sm bg-pokemon-${pokemon?.type}`}
+        >
+          <h5 className="text-white text-center text-3xl font-medium my-2">
             {capitalizeFirstLetter(pokemon?.name)}
           </h5>
           <img
@@ -67,7 +69,7 @@ const PokemonDescription = () => {
             alt={capitalizeFirstLetter(pokemon?.name)}
           />
           <div className="p-6 text-center">
-            <p className="text-gray-700 text-base mb-4">
+            <p className="text-white text-base mb-4">
               This Pokemon's name is{' '}
               <strong data-testid="name">
                 {capitalizeFirstLetter(pokemon?.name)}
@@ -88,7 +90,7 @@ const PokemonDescription = () => {
               )}
               .
             </p>
-            <div className="flex flex-row text-gray-700 justify-between mb-4">
+            <div className="flex flex-row text-white justify-between mb-4">
               <p>
                 HP: <strong data-testid="hp">{pokemon?.stats.hp}</strong>
               </p>
@@ -98,14 +100,18 @@ const PokemonDescription = () => {
               </p>
               <p>
                 Defense:{' '}
-                <strong data-testid="defence">{pokemon?.stats.defense}</strong>
+                <strong data-testid="defense">{pokemon?.stats.defense}</strong>
               </p>
             </div>
             <button
               type="button"
-              className=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+              className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text- font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-blue-800 to-blue-500 group-hover:from-blue-800 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
             >
-              <Link to="/">Back to search</Link>
+              <Link to="/">
+                <p className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  Back to search
+                </p>
+              </Link>
             </button>
           </div>
         </div>

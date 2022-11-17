@@ -19,7 +19,20 @@ export interface PokemonAbility {
   
   export interface PokemonListItem {
     name: string;
+    id: string;
     url:  string;
+    types: {
+      type: {
+        name: string;
+      }
+    }
+    sprites: {
+      other: {
+        dream_world: {
+          front_default: string;
+        }
+      }
+    }
   }
   
   export type PokemonListResults = PokemonListItem[];

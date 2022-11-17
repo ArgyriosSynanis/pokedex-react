@@ -4,10 +4,9 @@ import * as api from '../api';
 import PokemonDescription from '../components/PokemonDescription';
 import { BrowserRouter } from 'react-router-dom';
 
-
 describe('PokemonDescription component', () => {
   jest.mock('../api');
-  
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -83,7 +82,7 @@ describe('PokemonDescription component', () => {
     expect(screen.getByAltText('Bulbasaur')).toBeInTheDocument();
     expect(screen.getByTestId('hp')).toHaveTextContent('45');
     expect(screen.getByTestId('attack')).toHaveTextContent('49');
-    expect(screen.getByTestId('defence')).toHaveTextContent('49');
+    expect(screen.getByTestId('defense')).toHaveTextContent('49');
     expect(screen.getByTestId('abilityMain')).toHaveTextContent('Overgrow');
     expect(screen.getByTestId('abilitySecondary')).toHaveTextContent(
       'Chlorophyll'

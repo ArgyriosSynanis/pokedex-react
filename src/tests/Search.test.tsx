@@ -4,7 +4,7 @@ import Search from '../components/Search';
 
 describe('Loading component', () => {
   it('renders the input with the correct text and icon', () => {
-    render(<Search setSearch={() => {}} />);
+    render(<Search pokemon={undefined} />);
     const text = screen.getByPlaceholderText(/Search Pokemon/i);
     const searchIcon = screen.getByTestId('FaSearch');
     expect(text).toBeInTheDocument();
